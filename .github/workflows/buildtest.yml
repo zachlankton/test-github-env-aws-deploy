@@ -3,6 +3,8 @@ name: Build & Test Dev
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
@@ -17,4 +19,31 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
+      - name: Stash the build
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: out
+
+  test-deployment:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: 
+      name: production
+      url: https://github.com
+    steps:
+      - name: "Configure AWS Credentials" Action For GitHub Actions
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output
+      - name: Deploy -> Copy files to the test website with the AWS CLI
+        run: |
+          aws s3 sync ./out s3://test-github-env-aws-deploy
+
      
