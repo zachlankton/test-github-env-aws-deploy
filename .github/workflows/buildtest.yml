@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: testing
-      url: https://dmma8mozvxpei.cloudfront.net
+      url: "https://dmma8mozvxpei.cloudfront.net"
     steps:
       - name: "Configure AWS Credentials" Action For GitHub Actions
         uses: aws-actions/configure-aws-credentials@v1
