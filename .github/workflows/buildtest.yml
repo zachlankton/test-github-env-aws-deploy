@@ -44,4 +44,4 @@ jobs:
           name: build-output
       - name: Deploy -> Copy files to the test website with the AWS CLI
         run: |
-          aws s3 sync ./out s3://test-github-env-aws-deploy
+          aws s3 sync . s3://test-github-env-aws-deploy
