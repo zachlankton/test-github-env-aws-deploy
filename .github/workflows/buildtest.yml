@@ -44,4 +44,6 @@ jobs:
           name: build-output
       - name: Deploy -> Copy files to the test website with the AWS CLI
         run: |
+          aws s3 rm s3://test-github-env-aws-deploy --recursive
           aws s3 sync . s3://test-github-env-aws-deploy
+          aws cloudfront create-invalidation --distribution-id EWP30SCW0WV3X --paths /*
