@@ -4,6 +4,9 @@ const nextConfig = {
   swcMinify: true,
   trailingSlash: true,
   basePath: process.env.BASE_PATH || "",
+  images: {
+    unoptimized: true
+  }
 }
 
 module.exports = nextConfig
